@@ -15,6 +15,8 @@ createRoot(document.getElementById('root')!).render(
               <Route path={"/id-list"} element={<MonitorPage />} />
               <Route path={"/login"} element={<LoginPage />} />
               <Route path={"/warning"} element={<WarningPage />} />
+              <Route path={"/generate_204"} element={<CaptivePage />} /> // android
+              <Route path={"/hotspot-detect.html"} element={<CaptivePage />} /> // iphone
           </Routes>
       </BrowserRouter>
   </StrictMode>
