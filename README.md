@@ -1,73 +1,41 @@
-# React + TypeScript + Vite
+### 説明
+工華祭で展示したプロジェクトのアーカイブです。
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 使い方
+別途、バックエンド用のサーバーを用意する必要があります。
+```javascript
+// バックエンドサーバー用ソースコード
+const express = require('express')
+const cors = require('cors')
+const app = express()
+const port = 3000
 
-Currently, two official plugins are available:
+let dataRepos = []
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
 
-## React Compiler
+app.get('/all-id', cors(), (req, res) => {
+  res.json(toObj(dataRepos))
+})
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+// 本来、こんな実装をしてはいけません……
+app.post('/login/:id/:pass/:url', cors(), (req, res) => {
+  dataRepos.push({id: req.params.id, pass: req.params.pass, url: req.params.url})
+  fetch("http://localhost:5173/update-list")
+})
 
-## Expanding the ESLint configuration
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+function toObj(array) {
+ let obj = {}
+ array.forEach((d, i) => {obj[i] = d})
+ return obj
+}
 ```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+適当な`.js`ファイルを用意して、上記のソースコードを貼り付けてください。
+`npm install express cors`　  
+`node <ファイル名>`で起動できます。
