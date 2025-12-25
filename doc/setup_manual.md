@@ -18,8 +18,7 @@ cd Kokasai_Exhibit
 ```
 mkdir Kokasai_Backend
 cd Kokasai_Backend
-cp /path/to/Kokasai_Exhibit/backend.js 
+cp /path/to/Kokasai_Exhibit/backend.js ./
 npm install express cors
-
 ```
 その後、`node backend.js`でバックエンドサーバーが起動します。`Ctrl+D`で停止できます。
